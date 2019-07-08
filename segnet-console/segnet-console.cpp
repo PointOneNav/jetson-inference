@@ -21,13 +21,15 @@
  */
 
 #include "segNet.h"
-
+#include <deque>
 #include "loadImage.h"
 #include "commandLine.h"
 #include "cudaMappedMemory.h"
-
+#include <iostream>
 #include <sys/time.h>
-
+#include <sys/types.h>
+#include <dirent.h>
+#include <algorithm>
 
 uint64_t current_timestamp() {
     struct timeval te; 
@@ -35,6 +37,28 @@ uint64_t current_timestamp() {
     return te.tv_sec*1000LL + te.tv_usec/1000; // caculate milliseconds
 }
 
+std::deque<std::string> readDir(const char * imgDir){
+DIR *dir;
+struct dirent *ent;
+std::deque<std::string> files;
+if ((dir = opendir (imgDir)) != NULL) {
+  /* print all the files and directories within directory */
+  while ((ent = readdir (dir)) != NULL) {
+	  std::string f_name(ent->d_name);
+	  if (f_name.find(".png") != std::string::npos && f_name.find(".json") == std::string::npos){
+    		files.push_back( f_name);
+	  }
+  }
+  closedir (dir);
+} else {
+  /* could not open directory */
+  perror ("");
+  return files;
+}
+std::sort(files.begin(), files.end());
+
+return files;
+}
 
 // main entry point
 int main( int argc, char** argv )
@@ -46,7 +70,69 @@ int main( int argc, char** argv )
 		
 	printf("\n\n");
 	
+
+        // load image from file on disk
+        float* imgCPU    = NULL;
+        float* imgCUDA   = NULL;
+        int    imgWidth  = 0;
+        int    imgHeight = 0;
+        float* outCPU  = NULL;
+        float* outCUDA = NULL;
+
+
+	//  args (11):  0 [./aarch64/bin/segnet-console]  1 [/mnt/data//2019-06-12//0af4640e-8e4e-4397-bcef-88a9cb3ea657//17391313/]  2 [testing/]  3 [--prototxt]  4 [FCN-Alexnet-Cityscapes-SD/deploy.prototxt]  5 [--model]  6 [FCN-Alexnet-Cityscapes-SD/snapshot_iter_2756640.caffemodel]  7 [--label]  8 [FCN-Alexnet-Cityscapes-SD/cityscapes-labels.txt]  9 [--colors]  10 [FCN-Alexnet-Cityscapes-SD/cityscapes-deploy-colors.txt]  
+
+        segNet* net = segNet::Create("FCN-Alexnet-Cityscapes-HD/deploy.prototxt", "FCN-Alexnet-Cityscapes-HD/snapshot_iter_367568.caffemodel", "FCN-Alexnet-Cityscapes-HD/cityscapes-labels.txt", "FCN-Alexnet-Cityscapes-HD/cityscapes-deploy-colors.txt", SEGNET_DEFAULT_INPUT, SEGNET_DEFAULT_OUTPUT, 1, TYPE_FP32);
+        net->SetGlobalAlpha(120);
+        net->EnableProfiler();
+
+	const char * imageDirectory = argv[1];
+	std::string imgDirString(imageDirectory);
+	std::string imageOutputDirectory = argv[2];
+	auto files = readDir(imageDirectory);
+	for (auto & f : files){
+		std::string img_str = imgDirString + f; 
+		std::cout << img_str << std::endl;
+		       
+		imgWidth = 2048 / 2;
+		imgHeight = (1536) / 2;
+        	if( !loadImageRGBA(img_str.c_str(), (float4**)&imgCPU, (float4**)&imgCUDA, &imgWidth, &imgHeight) )
+        	{
+                	printf("failed to load image '%s'\n", img_str.c_str());
+                	return 0;
+        	}
+		if (outCUDA == NULL && outCPU == NULL){
+        		if( !cudaAllocMapped((void**)&outCPU, (void**)&outCUDA, imgWidth * imgHeight * sizeof(float) * 4) )
+        		{
+                		printf("segnet-console:  failed to allocate CUDA memory for output image (%ix%i)\n", imgWidth, imgHeight);
+                		return 0;
+        		}
+		}
+
+        	// process the segmentation network
+	        printf("segnet-console:  beginning processing (%zu)\n", current_timestamp());
+
+        	if( !net->Process(imgCUDA, imgWidth, imgHeight) )
+        	{
+                	printf("segnet-console:  failed to process segmentation\n");
+                	return 0;
+        	}
+	        CUDA(cudaThreadSynchronize());
+		// generate image overlay
+	        if( !net->Overlay(outCUDA, imgWidth, imgHeight, segNet::FILTER_LINEAR) )
+        	{
+                	printf("segnet-console:  failed to generate overlay.\n");
+                	return 0;
+        	}
+		std::string outFilename = imageOutputDirectory + "/" + f; 
+		if( !saveImageRGBA(outFilename.c_str(), (float4*)outCPU, imgWidth, imgHeight) )
+		{
+			printf("ERROR WRITING TO DISK\n");
+		}
+
+	}
 	
+/*	
 	// retrieve filename arguments
 	if( argc < 2 )
 	{
@@ -135,5 +221,6 @@ int main( int argc, char** argv )
 	CUDA(cudaFreeHost(imgCPU));
 	CUDA(cudaFreeHost(outCPU));
 	delete net;
+	*/
 	return 0;
 }
