@@ -28,6 +28,8 @@ sudo ln -s /usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h /usr/include/
 ### Building:
 
 ```
+git submodule update --init
+sudo apt-get install libqt4-dev
 cmake .
 make -j4
 ```
