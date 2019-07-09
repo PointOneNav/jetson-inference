@@ -80,10 +80,12 @@ int main( int argc, char** argv )
         float* outCUDA = NULL;
 
 
-	//  args (11):  0 [./aarch64/bin/segnet-console]  1 [/mnt/data//2019-06-12//0af4640e-8e4e-4397-bcef-88a9cb3ea657//17391313/]  2 [testing/]  3 [--prototxt]  4 [FCN-Alexnet-Cityscapes-SD/deploy.prototxt]  5 [--model]  6 [FCN-Alexnet-Cityscapes-SD/snapshot_iter_2756640.caffemodel]  7 [--label]  8 [FCN-Alexnet-Cityscapes-SD/cityscapes-labels.txt]  9 [--colors]  10 [FCN-Alexnet-Cityscapes-SD/cityscapes-deploy-colors.txt]  
-
-        segNet* net = segNet::Create("FCN-Alexnet-Cityscapes-HD/deploy.prototxt", "FCN-Alexnet-Cityscapes-HD/snapshot_iter_367568.caffemodel", "FCN-Alexnet-Cityscapes-HD/cityscapes-labels.txt", "FCN-Alexnet-Cityscapes-HD/cityscapes-deploy-colors.txt", SEGNET_DEFAULT_INPUT, SEGNET_DEFAULT_OUTPUT, 1, TYPE_FP32);
-        net->SetGlobalAlpha(120);
+#ifdef __x86_64__
+        segNet* net = segNet::Create("FCN-Alexnet-Cityscapes-HD/deploy.prototxt", "FCN-Alexnet-Cityscapes-HD/snapshot_iter_367568.caffemodel", "FCN-Alexnet-Cityscapes-HD/cityscapes-labels.txt", "FCN-Alexnet-Cityscapes-HD/cityscapes-deploy-colors.txt", SEGNET_DEFAULT_INPUT, SEGNET_DEFAULT_OUTPUT, 4, TYPE_FP32);
+#else
+        segNet* net = segNet::Create("FCN-Alexnet-Cityscapes-HD/deploy.prototxt", "FCN-Alexnet-Cityscapes-HD/snapshot_iter_367568.caffemodel", "FCN-Alexnet-Cityscapes-HD/cityscapes-labels.txt", "FCN-Alexnet-Cityscapes-HD/cityscapes-deploy-colors.txt", SEGNET_DEFAULT_INPUT, SEGNET_DEFAULT_OUTPUT, 4, TYPE_INT8);
+#endif
+        //net->SetGlobalAlpha(120);
         net->EnableProfiler();
 
 	const char * imageDirectory = argv[1];
@@ -92,8 +94,6 @@ int main( int argc, char** argv )
 	auto files = readDir(imageDirectory);
 	for (auto & f : files){
 		std::string img_str = imgDirString + f; 
-		std::cout << img_str << std::endl;
-		       
 		imgWidth = 2048 / 2;
 		imgHeight = (1536) / 2;
         	if( !loadImageRGBA(img_str.c_str(), (float4**)&imgCPU, (float4**)&imgCUDA, &imgWidth, &imgHeight) )
