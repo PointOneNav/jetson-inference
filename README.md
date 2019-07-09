@@ -1,4 +1,4 @@
-<img src="https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiii8qGz6jjAhXirVQKHZ_iAE4QjRx6BAgBEAU&url=http%3A%2F%2Fpointonenav.com%2F&psig=AOvVaw3CtzG3H2QD244u21TpU2M0&ust=1562788519121079">
+<img src="https://pbs.twimg.com/profile_images/830189200041316353/6Hb9DajI_400x400.jpg">
 
 
 ## Point one setup instructions:
