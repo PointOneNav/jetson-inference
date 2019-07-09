@@ -1,3 +1,28 @@
+<img src="https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiii8qGz6jjAhXirVQKHZ_iAE4QjRx6BAgBEAU&url=http%3A%2F%2Fpointonenav.com%2F&psig=AOvVaw3CtzG3H2QD244u21TpU2M0&ust=1562788519121079">
+## Point one setup instructions:
+
+
+### Cloning:
+
+```
+cd ~/nautilus/third_party/
+git clone https://github.com/pointonenav/jetson-inference/
+```
+
+### Building:
+
+```
+make -j4
+```
+
+### Downloading models:
+
+```
+cd data
+./download_models.sh
+```
+
+
 <img src="https://github.com/dusty-nv/jetson-inference/raw/master/docs/images/deep-vision-header.jpg">
 
 # Deploying Deep Learning
