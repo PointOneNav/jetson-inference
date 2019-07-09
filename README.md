@@ -1,7 +1,7 @@
 <img src="https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiii8qGz6jjAhXirVQKHZ_iAE4QjRx6BAgBEAU&url=http%3A%2F%2Fpointonenav.com%2F&psig=AOvVaw3CtzG3H2QD244u21TpU2M0&ust=1562788519121079">
 
-### Point one setup instructions:
 
+## Point one setup instructions:
 
 ### Cloning:
 
@@ -9,6 +9,21 @@
 cd ~/nautilus/third_party/
 git clone https://github.com/pointonenav/jetson-inference/
 ```
+
+### Dependencies setup:
+
+```
+Installation for tensorRT on Ubuntu x86_64 :
+https://docs.nvidia.com/deeplearning/sdk/tensorrt-archived/tensorrt-515/tensorrt-install-guide/index.html#installing-debian
+```
+
+### Pre-emptive build error fixing:
+
+```
+sudo ln -s /usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h /usr/include/glib-2.0/
+
+```
+
 
 ### Building:
 
