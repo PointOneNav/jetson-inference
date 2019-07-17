@@ -17,17 +17,25 @@ Installation for tensorRT on Ubuntu x86_64 :
 https://docs.nvidia.com/deeplearning/sdk/tensorrt-archived/tensorrt-515/tensorrt-install-guide/index.html#installing-debian
 ```
 
+If tensorrt fails try installing this:
+```
+wget https://developer.nvidia.com/compute/cuda/10.1/Prod/local_installers/cuda-repo-ubuntu1804-10-1-local-10.1.168-418.67_1.0-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu1804-10-1-local-10.1.168-418.67_1.0-1_amd64.deb
+```
+
 ### Pre-emptive build error fixing:
 
 ```
 sudo ln -s /usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h /usr/include/glib-2.0/
-
 ```
 
 
 ### Building:
 
 ```
+git submodule update --init
+sudo apt-get install libqt4-dev
+cmake .
 make -j4
 ```
 
