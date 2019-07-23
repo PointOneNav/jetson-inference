@@ -12,6 +12,13 @@ git clone https://github.com/pointonenav/jetson-inference/
 
 ### Dependencies setup:
 
+Prerequisits:
+```
+sudo apt install libgstreamer-plugins-base1.0-dev
+sudo apt install libgstreamer1.0-dev
+sudo apt install libglew-dev
+```
+
 Installation for tensorRT on Ubuntu x86_64:
 ```
 Install tensorrt version 5.1.5 GA
