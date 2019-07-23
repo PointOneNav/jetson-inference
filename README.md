@@ -43,7 +43,7 @@ make -j4
 
 ```
 cd data
-./download_models.sh
+./download_model.sh
 ```
 
 # Nvidia AGX Xavier Hardware Setup
