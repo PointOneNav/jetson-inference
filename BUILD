@@ -29,6 +29,6 @@ cc_library(
 	hdrs = glob(["*.h", "utils/*.h", "utils/cuda/*.h"]),
 	includes = ["utils/", "utils/cuda/"],
 	data = glob(["data/**"]),
-	deps = [":jetson-utils-arm", ":jetson-inference-arm"],
+	deps = [":jetson-utils-x86", ":jetson-inference-x86"],
 	visibility = ["//visibility:public"],
 )
