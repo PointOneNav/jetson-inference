@@ -122,7 +122,7 @@ Create a mount point on the Xavier. Replace `host_ip` with the host's IP address
 Run `df -h` and there should be a line resembling the following:
 
 ```
-Filesystem                                  Size  Used Avail Use% Mounted on
+Filesystem                          				        Size  Used Avail Use% Mounted on
 host_ip:/nfs-share 							XXXG   XXG  XXXG   X% /nfs
 ```
 
