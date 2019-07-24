@@ -21,17 +21,21 @@ sudo apt install libglew-dev
 
 Installation for tensorRT on Ubuntu x86_64:
 
+Download the appropriate library for your OS:
+
 Ubuntu 16.04
-Download https://pointone-public-build-assets.s3-us-west-1.amazonaws.com/nvidia/nv-tensorrt-repo-ubuntu1604-cuda10.1-trt5.1.5.0-ga-20190427_1-1_amd64.deb
+
+https://pointone-public-build-assets.s3-us-west-1.amazonaws.com/nvidia/nv-tensorrt-repo-ubuntu1604-cuda10.1-trt5.1.5.0-ga-20190427_1-1_amd64.deb
+
+Ubuntu 18.04
+
+https://pointone-public-build-assets.s3-us-west-1.amazonaws.com/nvidia/nv-tensorrt-repo-ubuntu1804-cuda10.1-trt5.1.5.0-ga-20190427_1-1_amd64.deb
+
 ```
 sudo dpkg -i nv-tensorrt-repo-ubuntu1604-cuda10.1-trt5.1.5.0-ga-20190427_1-1_amd64.deb 
-```
-Ubuntu 18.04
-Download https://pointone-public-build-assets.s3-us-west-1.amazonaws.com/nvidia/nv-tensorrt-repo-ubuntu1804-cuda10.1-trt5.1.5.0-ga-20190427_1-1_amd64.deb
-```
+OR
 sudo dpkg -i nv-tensorrt-repo-ubuntu1804-cuda10.1-trt5.1.5.0-ga-20190427_1-1_amd64.deb 
-```
-```
+
 sudo apt-key add /var/nv-tensorrt-repo-cuda10.1-trt5.1.5.0-ga-20190427/7fa2af80.pub
 sudo apt-get update
 sudo apt-get install tensorrt
