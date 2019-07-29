@@ -1,5 +1,15 @@
 licenses(["restricted"])
 
+config_setting(
+	name = "arm_build",
+	values = {"cpu": "aarch64"},
+)
+
+config_setting(
+	name = "x86_build",
+	values = {"cpu": "x86_64"},
+)
+
 cc_import(
 	name = "jetson-inference-x86",
 	shared_library = "x86_64/lib/libjetson-inference.so",
@@ -29,6 +39,9 @@ cc_library(
 	hdrs = glob(["*.h", "utils/*.h", "utils/cuda/*.h"]),
 	includes = ["utils/", "utils/cuda/"],
 	data = glob(["data/**"]),
-	deps = [":jetson-utils-x86", ":jetson-inference-x86"],
+	deps = select({
+			":arm_build": [":jetson-inference-arm"],
+			":x86_build": [":jetson-inference-x86"],
+		}),
 	visibility = ["//visibility:public"],
 )
