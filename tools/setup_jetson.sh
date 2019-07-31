@@ -4,9 +4,18 @@ sudo /usr/bin/jetson_clocks    # (max out fans)
 sudo nvpmodel -q     # (query the current mode)
 sudo nvpmodel -m 0   # (enable MAX-N)
 
+### Add line to Crontab to max out fans at boot ###
+cd $HOME
+line="@reboot  /usr/bin/jetson_clocks"
+sudo crontab -l > mycron # write out current crontab
+echo $line >> mycron
+sudo crontab mycron # install new cron file
+rm mycron
+
 ### Install required dependencies from apt ###
-sudo apt install libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev libglew-dev
-sudo apt-get install g++-5 gcc-5 default-jdk libxkbcommon-dev cmake python-pip python3-pip libboost-all-dev
+sudo apt-get update
+sudo apt install -y libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev libglew-dev
+sudo apt-get -y install g++-5 gcc-5 default-jdk libxkbcommon-dev cmake python-pip python3-pip libboost-all-dev
 
 ### Download and build Bazel from source ###
 cd $HOME
@@ -23,9 +32,11 @@ git clone --branch lucas/orb_gpu_features https://github.com/PointOneNav/nautilu
 echo 'export REPO_ROOT=$HOME/nautilus' >> $HOME/.bashrc
 source $HOME/.bashrc
 cd $HOME/nautilus/
-$HOME/nautilus/tools/setup/setup_libraries.sh # Install 3rd-party dependency libraries
+./tools/setup/setup_libraries.sh # Install 3rd-party dependency libraries
+source $HOME/.bashrc
 
 ### Make and install OpenCV ###
+cd $HOME
 wget https://github.com/opencv/opencv/archive/3.4.2.zip?source=post_page--------------------------- -O opencv-3.4.2.zip
 unzip opencv-3.4.2.zip
 mkdir $HOME/opencv-3.4.2/build/
@@ -61,17 +72,9 @@ cd third_party
             sudo make install
         cd ..
         rm -rf build
-        mkdir build
         export PATH=$PATH:/opt/local/gcc-linaro/bin
-        sudo mkdir /usr/local/aarch64-linux-gnu
-        cd build
-            cmake .. -DCMAKE_TOOLCHAIN_FILE=../../../toolchain_agx.cmake -DCMAKE_INSTALL_PREFIX=/usr/local/aarch64-linux-gnu
-            make -j8
-            sudo make install
-        cd ..
-        rm -rf build
-    cd ..
-    rm -rf GPSTk
+     cd ..
+     rm -rf GPSTk
 cd ..
 
 ### Make and install websocketpp ###
@@ -107,16 +110,14 @@ tar xvf ORBvoc.txt.tar.gz
 rm ORBvoc.txt.tar.gz
 
 ### Setup environment ###
-$HOME/nautilus/third_party/jetson-inference/build_jetson_armv8.sh
+cd $HOME/nautilus/third_party/jetson-inference
+./build_jetson_armv8.sh
 
 ### Clean up ###
-
-
-### Add line to Crontab to max out fans at boot ###
 cd $HOME
-line="@reboot  /usr/bin/jetson_clocks"
-sudo crontab -l > mycron # write out current crontab
-echo $line >> mycron
-sudo crontab mycron # install new cron file
-rm mycron
+rm bazel-0.22.0-dist.zip
+rm opencv-3.4.2.zip
 
+### Build ORB ###
+cd $HOME/nautilus
+bazel run -c opt //point_one/vision/maply/localization:orb -- --map ~/Downloads/map\ \(2\).bin --calibrationSFM ~/calibration/camera_calibration_flir_17391313.xml -pyramid 1  --alignment ~/Downloads/sim_unscaled.sim --origin ~/Downloads/origin\ \(2\).json
