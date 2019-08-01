@@ -33,7 +33,6 @@ echo 'export REPO_ROOT=$HOME/nautilus' >> $HOME/.bashrc
 source $HOME/.bashrc
 cd $HOME/nautilus/
 ./tools/setup/setup_libraries.sh # Install 3rd-party dependency libraries
-source $HOME/.bashrc
 
 ### Make and install OpenCV ###
 cd $HOME
@@ -120,4 +119,5 @@ rm opencv-3.4.2.zip
 
 ### Build ORB ###
 cd $HOME/nautilus
+source $HOME/.bashrc
 bazel run -c opt //point_one/vision/maply/localization:orb -- --map ~/Downloads/map\ \(2\).bin --calibrationSFM ~/calibration/camera_calibration_flir_17391313.xml -pyramid 1  --alignment ~/Downloads/sim_unscaled.sim --origin ~/Downloads/origin\ \(2\).json
