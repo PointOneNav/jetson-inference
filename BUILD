@@ -7,7 +7,7 @@ config_setting(
 
 config_setting(
 	name = "x86_build",
-	values = {"cpu": "x86_64"},
+	values = {"cpu": "x86"},
 )
 
 cc_import(
@@ -42,6 +42,7 @@ cc_library(
 	deps = select({
 			":arm_build": [":jetson-inference-arm"],
 			":x86_build": [":jetson-inference-x86"],
+			"//conditions:default": [":jetson-inference-x86"],
 		}),
 	visibility = ["//visibility:public"],
 )
