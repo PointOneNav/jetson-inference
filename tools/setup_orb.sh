@@ -156,20 +156,27 @@ elif [[ `uname` == 'Linux' && `uname -p` == "x86_64" ]]; then
 	sudo apt-get update
 	sudo apt-get install tensorrt
 
-        ### Download and install Bazel 0.22 ###
-        cd $HOME
-	wget https://github.com/bazelbuild/bazel/releases/download/0.22.0/bazel-0.22.0-installer-linux-x86_64.sh
-        chmod +x bazel-0.22.0-installer-linux-x86_64.sh
-	./bazel-0.22.0-installer-linux-x86_64.sh
-        source $HOME/.bashrc
+        ### Download and install Bazel 0.22, if not already installed ###
+        bazel version | grep -q 'Build label: 0.22'
+	if [ $? > 0 ]; then
+		cd $HOME
+		wget https://github.com/bazelbuild/bazel/releases/download/0.22.0/bazel-0.22.0-installer-linux-x86_64.sh
+		chmod +x bazel-0.22.0-installer-linux-x86_64.sh
+		./bazel-0.22.0-installer-linux-x86_64.sh
+		source $HOME/.bashrc
+	fi
 
-	### Clone and setup Nautilus libraries ###
+	### Clone and setup Nautilus repo, if it doesn't exist ###
 	cd $HOME
-	git clone --branch lucas/orb_gpu_features https://github.com/PointOneNav/nautilus.git
-	echo 'export REPO_ROOT=$HOME/nautilus' >> $HOME/.bashrc
-	source $HOME/.bashrc
+	if [ ! -d "nautilus" ]; then
+		git clone --branch lucas/orb_gpu_features https://github.com/PointOneNav/nautilus.git
+		echo 'export REPO_ROOT=$HOME/nautilus' >> $HOME/.bashrc
+		source $HOME/.bashrc
+	fi
+
+	### Install 3rd-party dependency libraries ###
 	cd $HOME/nautilus/
-	./tools/setup/setup_libraries.sh # Install 3rd-party dependency libraries
+	./tools/setup/setup_libraries.sh
 
 	### Make and install OpenCV ###
 	cd $HOME
@@ -185,16 +192,22 @@ elif [[ `uname` == 'Linux' && `uname -p` == "x86_64" ]]; then
 	cd $HOME/nautilus/
 	./tools/setup/setup_gpstk.sh
 
-	### Make and install websocketpp ###
+	### Make and install websocketpp in home directory, if not already there ###
 	cd $HOME
-	git clone git://github.com/zaphoyd/websocketpp.git
-	cd websocketpp/
-	cmake .
-	sudo make install
+	if [ ! -d "websocketpp" ]; then
+		git clone git://github.com/zaphoyd/websocketpp.git
+		cd websocketpp/
+		cmake .
+		sudo make install
+	fi
 
-	### Clone and setup jetson-inference repo ###
+	### Clone jetson-inference, if not already cloned ###
 	cd $HOME/nautilus/third_party/
-	git clone https://github.com/PointOneNav/jetson-inference.git
+	if [ ! -d "jetson-inference" ]; then
+		git clone https://github.com/PointOneNav/jetson-inference.git
+	fi
+	
+	### Make jetson-inference ###
 	cd $HOME/nautilus/third_party/jetson-inference/
 	git submodule update --init
 	mkdir build
@@ -202,22 +215,32 @@ elif [[ `uname` == 'Linux' && `uname -p` == "x86_64" ]]; then
 	cmake ../
 	make -j8
 
-	### Clone and setup gpu_orb_extractor ###
+	### Clone gpu_orb_extractor, if not already cloned ###
 	cd $HOME/nautilus/third_party/
-	git clone https://github.com/PointOneNav/gpu_orb_extractor.git
+        if [ ! -d "gpu_orb_extractor" ]; then
+                git clone https://github.com/PointOneNav/gpu_orb_extractor.git
+        fi
+
+	### Make gpu_orb_extractor ###
 	cd gpu_orb_extractor/
 	cmake .
 	make -j8
 
-	### Fetch ORBvoc.txt ###
-	mkdir $HOME/nautilus/third_party/ORBSLAM2/Vocabulary/
-	cd $HOME/nautilus/third_party/ORBSLAM2/Vocabulary/
-	wget https://pointone-vision.s3-us-west-1.amazonaws.com/models/vocabulary/ORBvoc.txt.tar.gz
-	tar xvf ORBvoc.txt.tar.gz
-	rm ORBvoc.txt.tar.gz
+	### Fetch ORBvoc.txt if it does not exist ###
+	cd $HOME/nautilus/third_party/ORBSLAM2/
+	if [ ! -d "Vocabulary" ]; then
+		mkdir ./Vocabulary/
+	fi
+	cd Vocabulary
+	if [ ! -e "ORBvoc.txt" ]; then
+		wget https://pointone-vision.s3-us-west-1.amazonaws.com/models/vocabulary/ORBvoc.txt.tar.gz
+		tar xvf ORBvoc.txt.tar.gz
+		rm ORBvoc.txt.tar.gz
+	fi
 
 	### Clean up ###
-	
+	rm $HOME/opencv-3.4.2.zip
+
 else
     echo "Not supported architecture"
 fi
