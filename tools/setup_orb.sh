@@ -171,16 +171,15 @@ if [[ `uname` == 'Linux' && `uname -p` == "aarch64" ]]; then
 	./build_jetson.sh
 
 	### Clean up ###
-	cd $HOME
-	rm bazel-0.22.0-dist.zip
-	rm opencv-3.4.2.zip
+	rm $HOME/bazel-0.22.0-dist.zip
+	rm $HOME/opencv-3.4.2.zip
 
 
 elif [[ `uname` == 'Linux' && `uname -p` == "x86_64" ]]; then
         ### Install required dependencies from apt ###
         sudo apt-get update
         sudo apt install -y libwayland-dev libegl1-mesa-dev libxkbcommon-dev libdc1394-22-dev libgeographic-dev libsuitesparse-dev libjpeg-dev libturbojpeg0-dev libtiff-dev libflann-dev libglfw3-dev libglm-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev libglew-dev
-        sudo apt-get -y install git g++-5 gcc-5 default-jdk libxkbcommon-dev cmake python-pip python3-pip libboost-all-dev cmake libwebsocketpp-dev
+        sudo apt-get -y install git g++-5 g++-7 gcc-5 gcc-7 default-jdk libxkbcommon-dev cmake python-pip python3-pip libboost-all-dev cmake libwebsocketpp-dev
 
 	### Copy gstreamer files ###
 	sudo cp /usr/lib/x86_64-linux-gnu/gstreamer-1.0/include/gst/* /usr/include/gstreamer-1.0/gst/
@@ -222,6 +221,7 @@ elif [[ `uname` == 'Linux' && `uname -p` == "x86_64" ]]; then
 	fetch_orbvoc
 
 	### Clean up ###
+	rm $HOME/bazel-0.22.0-installer-linux-x86_64.sh
 	rm $HOME/opencv-3.4.2.zip
 
 else
