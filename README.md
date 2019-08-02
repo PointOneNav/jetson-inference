@@ -87,7 +87,7 @@ There are two options to choose from to setup the required software on AGX Xavie
 
 2) The Xavier cloning procedure, which is described below. While it does take significant time to make a backup of the "master" AGX, clones can flashed very quickly compared with the above method.
 
-## Xavier Cloning Procedure
+# Xavier Cloning Procedure
 
 ### Prerequisites
 
