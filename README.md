@@ -79,7 +79,15 @@ cd data
 ./download_model.sh
 ```
 
-# Nvidia AGX Xavier Hardware Setup
+# Nvidia AGX Xavier Setup
+
+There are two options to choose from to setup the required software on AGX Xavier for CV:
+
+1) The setup script `setup_orb.sh`, which is located in the tools directory of this repo. The downside of this method is that it can take a very long time for cloning multiple AGXs, as all of the downloading and compilation must be done locally on the AGX.
+
+2) The Xavier cloning procedure, which is described below. While it does take significant time to make a backup of the "master" AGX, clones can flashed very quickly compared with the above method.
+
+# Xavier Cloning Procedure
 
 ### Prerequisites
 
