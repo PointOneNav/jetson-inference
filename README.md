@@ -79,7 +79,7 @@ cd data
 ./download_model.sh
 ```
 
-# Nvidia AGX Xavier Hardware Setup
+# Nvidia AGX Xavier Cloning Procedure
 
 ### Prerequisites
 
