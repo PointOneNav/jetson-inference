@@ -166,7 +166,7 @@ elif [[ `uname` == 'Linux' && `uname -p` == "x86_64" ]]; then
 		source $HOME/.bashrc
 	fi
 
-	### Clone and setup Nautilus repo, if it doesn't exist ###
+	### Clone and setup Nautilus repo if it does not exist ###
 	cd $HOME
 	if [ ! -d "nautilus" ]; then
 		git clone --branch lucas/orb_gpu_features https://github.com/PointOneNav/nautilus.git
@@ -192,7 +192,7 @@ elif [[ `uname` == 'Linux' && `uname -p` == "x86_64" ]]; then
 	cd $HOME/nautilus/
 	./tools/setup/setup_gpstk.sh
 
-	### Make and install websocketpp in home directory, if not already there ###
+	### Make and install websocketpp in home directory if it does not exist ###
 	cd $HOME
 	if [ ! -d "websocketpp" ]; then
 		git clone git://github.com/zaphoyd/websocketpp.git
@@ -201,7 +201,7 @@ elif [[ `uname` == 'Linux' && `uname -p` == "x86_64" ]]; then
 		sudo make install
 	fi
 
-	### Clone jetson-inference, if not already cloned ###
+	### Clone jetson-inference if it does not exist ###
 	cd $HOME/nautilus/third_party/
 	if [ ! -d "jetson-inference" ]; then
 		git clone https://github.com/PointOneNav/jetson-inference.git
@@ -215,7 +215,7 @@ elif [[ `uname` == 'Linux' && `uname -p` == "x86_64" ]]; then
 	cmake ../
 	make -j8
 
-	### Clone gpu_orb_extractor, if not already cloned ###
+	### Clone gpu_orb_extractor if it does not exist ###
 	cd $HOME/nautilus/third_party/
         if [ ! -d "gpu_orb_extractor" ]; then
                 git clone https://github.com/PointOneNav/gpu_orb_extractor.git
