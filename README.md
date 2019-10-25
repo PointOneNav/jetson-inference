@@ -54,6 +54,7 @@ sudo dpkg -i cuda-repo-ubuntu1804-10-1-local-10.1.168-418.67_1.0-1_amd64.deb
 Next, re-run:
 ```
 sudo apt-get install tensorrt
+sudo apt-get install cuda-10-1
 ```
 
 ### Pre-emptive build error fixing:
