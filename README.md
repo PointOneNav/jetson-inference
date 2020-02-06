@@ -81,7 +81,7 @@ cd data
 ./download_model.sh
 ```
 
-# Nvidia AGX Xavier Setup
+# Nvidia AGX Xavier Setup (This step is only if you have Nvidia AGX Xavier hardware)
 
 There are two options to choose from to setup the required software on AGX Xavier for CV:
 
