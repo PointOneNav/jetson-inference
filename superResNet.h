@@ -22,71 +22,68 @@
 
 #include "tensorNet.h"
 
-
 /**
  * @note superResNet is only supported with TensorRT 5.0 and newer,
  * as it uses ONNX models and requires ONNX import support in TensorRT.
  */
 #if NV_TENSORRT_MAJOR >= 5
-#define HAS_SUPERRES_NET
+#  define HAS_SUPERRES_NET
 #endif
-
 
 /**
  * Super Resolution Network
  */
-class superResNet : public tensorNet
-{
-public:
-	/**
+class superResNet : public tensorNet {
+ public:
+  /**
 	 * Load super resolution network
 	 */
-	static superResNet* Create();
+  static superResNet* Create();
 
-	/**
+  /**
 	 * Destroy
 	 */
-	~superResNet();
+  ~superResNet();
 
-	/**
+  /**
 	 * Upscale a 4-channel RGBA image.
 	 */
-	bool UpscaleRGBA( float* input, uint32_t inputWidth, uint32_t inputHeight,
-			        float* output, uint32_t outputWidth, uint32_t outputHeight,
-			        float maxPixelValue=255.0f );
+  bool UpscaleRGBA(float* input, uint32_t inputWidth, uint32_t inputHeight,
+                   float* output, uint32_t outputWidth, uint32_t outputHeight,
+                   float maxPixelValue = 255.0f);
 
-	/**
+  /**
 	 * Upscale a 4-channel RGBA image.
 	 */
-	bool UpscaleRGBA( float* input, float* output, float maxPixelValue=255.0f );
+  bool UpscaleRGBA(float* input, float* output, float maxPixelValue = 255.0f);
 
-	/**
+  /**
 	 * Retrieve the width of the input image, in pixels.
 	 */
-	inline uint32_t GetInputWidth() const						{ return mWidth; }
+  inline uint32_t GetInputWidth() const { return mWidth; }
 
-	/**
+  /**
 	 * Retrieve the height of the input image, in pixels.
 	 */
-	inline uint32_t GetInputHeight() const						{ return mHeight; }
+  inline uint32_t GetInputHeight() const { return mHeight; }
 
-	/**
+  /**
 	 * Retrieve the width of the output image, in pixels.
 	 */
-	inline uint32_t GetOutputWidth() const						{ return DIMS_W(mOutputs[0].dims); }
+  inline uint32_t GetOutputWidth() const { return DIMS_W(mOutputs[0].dims); }
 
-	/**
+  /**
 	 * Retrieve the height of the output image, in pixels.
 	 */
-	inline uint32_t GetOutputHeight() const						{ return DIMS_H(mOutputs[0].dims); }
+  inline uint32_t GetOutputHeight() const { return DIMS_H(mOutputs[0].dims); }
 
-	/**
+  /**
 	 * Retrieve the scale factor between the input and output.
 	 */
-	inline uint32_t GetScaleFactor() const						{ return GetOutputWidth() / GetInputWidth(); }
+  inline double GetScaleFactor() const {
+    return (double)(double(GetOutputWidth()) / double(GetInputWidth()));
+  }
 
-protected:
-	superResNet();
+ protected:
+  superResNet();
 };
-
-

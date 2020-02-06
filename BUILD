@@ -37,12 +37,12 @@ cc_import(
 cc_library(
 	name = "jetson",
 	hdrs = glob(["*.h", "utils/*.h", "utils/cuda/*.h"]),
-	includes = ["utils/", "utils/cuda/"],
+	includes = ["utils/", "utils/cuda/", "."],
 	data = glob(["data/**"]),
 	deps = select({
-			":arm_build": [":jetson-inference-arm"],
-			":x86_build": [":jetson-inference-x86"],
-			"//conditions:default": [":jetson-inference-x86"],
+			":arm_build": [":jetson-inference-arm", ":jetson-utils-arm"],
+			":x86_build": [":jetson-inference-x86", ":jetson-utils-x86"],
+			"//conditions:default": [":jetson-inference-x86", ":jetson-utils-x86"],
 		}),
 	visibility = ["//visibility:public"],
 )
