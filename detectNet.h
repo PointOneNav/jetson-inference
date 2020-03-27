@@ -97,6 +97,8 @@ public:
 	 * @param bboxes Name of the output bounding box layer blob, which contains a grid of rectangles in the image.
 	 * @param maxBatchSize The maximum batch size that the network will support and be optimized for.
 	 */
+
+	
 	static detectNet* Create( const char* prototxt_path, const char* model_path, 
 						 const char* mean_binary, const char* class_labels, float threshold=0.5f, 
 						 const char* input = DETECTNET_DEFAULT_INPUT, 
@@ -128,8 +130,11 @@ public:
 	/**
 	 * Load a new network instance by parsing the command line.
 	 */
+
+	
 	static detectNet* Create( int argc, char** argv );
 	
+
 	/**
 	 * Destory
 	 */

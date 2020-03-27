@@ -167,7 +167,7 @@ segNet* segNet::Create(NetworkType networkType, uint32_t maxBatchSize,
         "third_party/jetson-inference/data/FCN-Alexnet-Cityscapes-SD/"
         "deploy.prototxt",
         "third_party/jetson-inference/data/FCN-Alexnet-Cityscapes-SD/"
-        "snapshot_iter_114860.caffemodel",
+        "snapshot_iter_2756640.caffemodel",
         "third_party/jetson-inference/data/FCN-Alexnet-Cityscapes-SD/"
         "cityscapes-labels.txt",
         "third_party/jetson-inference/data/FCN-Alexnet-Cityscapes-SD/"
