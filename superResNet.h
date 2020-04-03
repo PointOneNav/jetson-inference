@@ -20,6 +20,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+#ifndef __SUPERRESNET_NET_H__
+#define __SUPERRESNET_NET_H__
+
+
 #include "tensorNet.h"
 
 /**
@@ -29,7 +33,17 @@
 #if NV_TENSORRT_MAJOR >= 5
 #  define HAS_SUPERRES_NET
 #endif
+/**
+ * Name of default input blob for segmentation model.
+ * @ingroup deepVision
+ */
+#define RESNET_DEFAULT_INPUT "input_0"
 
+/**
+ * Name of default output blob for segmentation model.
+ * @ingroup deepVision
+ */
+#define RESNET_DEFAULT_OUTPUT "output_0"
 /**
  * Super Resolution Network
  */
@@ -38,7 +52,29 @@ class superResNet : public tensorNet {
   /**
 	 * Load super resolution network
 	 */
+  enum NetworkType {
+    FCN_ResNet18_Cityscapes_512x256,
+    FCN_ResNet18_Cityscapes_1024x512,
+    FCN_ResNet18_Cityscapes_2048x1024,
+    FCN_ResNet18_DeepScene_576x320,
+    FCN_ResNet18_DeepScene_864x480,
+    FCN_ResNet18_MHP_512x320,
+    FCN_ResNet18_MHP_640x360,
+    FCN_ResNet18_Pascal_VOC_320x320,
+    FCN_ResNet18_Pascal_VOC_512x320,
+    FCN_ResNet18_SUN_RGBD_512x400,
+    FCN_ResNet18_SUN_RGBD_640x512
+  };
+
   static superResNet* Create();
+  static superResNet* Create(const char* model_path,
+                            const char* input = RESNET_DEFAULT_INPUT,
+                            const char* output = RESNET_DEFAULT_OUTPUT,
+                            uint32_t maxBatchSize = 2);
+  static superResNet* Create(NetworkType networkType,
+                            uint32_t maxBatchSize = 2);
+  
+                
 
   /**
 	 * Destroy
@@ -87,3 +123,6 @@ class superResNet : public tensorNet {
  protected:
   superResNet();
 };
+
+
+#endif

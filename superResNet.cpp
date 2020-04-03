@@ -31,7 +31,53 @@ superResNet::superResNet() {}
 // Destructor
 superResNet::~superResNet() {}
 // Create
-// superResNet* superResNet::Create(const char* model, ) { superResNet* net = new superResNet(); }
+superResNet* superResNet::Create(NetworkType networkType, uint32_t maxBatchSize) {
+  superResNet* net = NULL;
+  /*
+  FCN_ResNet18_Cityscapes_512x256,
+    FCN_ResNet18_Cityscapes_1024x512,
+    FCN_ResNet18_Cityscapes_2048x1024,
+    FCN_ResNet18_DeepScene_576x320,
+    FCN_ResNet18_DeepScene_864x480,
+    FCN_ResNet18_MHP_512x320,
+    FCN_ResNet18_MHP_640x360,
+    FCN_ResNet18_Pascal_VOC_320x320,
+    FCN_ResNet18_Pascal_VOC_512x320,
+    FCN_ResNet18_SUN_RGBD_512x400,
+    FCN_ResNet18_SUN_RGBD_640x512*/
+  if(networkType == FCN_ResNet18_Cityscapes_2048x1024) {
+    net = Create("third_party/jetson-inference/data/FCN-ResNet18-Cityscapes-2048x1024/"
+                  "fcn_resnet18.onnx",
+                  RESNET_DEFAULT_INPUT, RESNET_DEFAULT_OUTPUT, maxBatchSize);
+  } 
+  return net;
+}
+
+superResNet* superResNet::Create(const char* model, 
+                                  const char* input_blob, const char* output_blob,
+                                  uint32_t maxBatchSize) { 
+  superResNet* net = new superResNet(); 
+
+  if (!net->LoadNetwork(NULL, model, NULL, input_blob, output_blob,
+                        maxBatchSize, TYPE_FP32)) {
+    printf(LOG_TRT "failed to load superResNet model\n");
+    return NULL;
+  }
+
+  printf("\n");
+  printf("superResNet -- super resolution network loaded from:\n");
+  printf("            -- model        '%s'\n", model);
+  printf("            -- input blob   '%s'\n", input_blob);
+  printf("            -- output blob  '%s'\n", output_blob);
+  printf("            -- batch size   %u\n", maxBatchSize);
+  printf("            -- input dims   %ux%u\n", net->GetInputWidth(),
+         net->GetInputHeight());
+  printf("            -- output dims  %ux%u\n", net->GetOutputWidth(),
+         net->GetOutputHeight());
+  printf("            -- scale factor %.8fx\n\n", net->GetScaleFactor());
+
+  return net;
+}
 
 // Create
 superResNet* superResNet::Create() {

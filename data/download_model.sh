@@ -30,3 +30,11 @@ download_archive "https://nvidia.box.com/shared/static/u5ey2ws0nbtzyqyftkuqazx1h
 download_archive "https://nvidia.box.com/shared/static/vbk5ofu1x2hwp9luanbg4o0vrfub3a7j.gz" "FCN-Alexnet-SYNTHIA-Summer-SD.tar.gz" 
 download_archive "https://nvidia.box.com/shared/static/ydgmqgdhbvul6q9avoc9flxr3fdoa8pw.gz" "FCN-Alexnet-SYNTHIA-Summer-HD.tar.gz"
 download_archive "https://nvidia.box.com/shared/static/ht46fmnwvow0o0n0ke92x6bzkht8g5xb.gz" "ResNet-50.tar.gz"
+
+download_archive "https://nvidia.box.com/shared/static/r3bq08qh7zb0ap2lf4ysjujdx64j8ofw.gz" "multiped-500.tar.gz"
+download_archive "https://nvidia.box.com/shared/static/wjitc00ef8j6shjilffibm6r2xxcpigz.gz" "facenet-120.tar.gz"
+download_archive "https://nvidia.box.com/shared/static/0wbxo6lmxfamm1dk90l8uewmmbpbcffb.gz" "ped-100.tar.gz" 
+download_archive "https://nvidia.box.com/shared/static/3qdg3z5qvl8iwjlds6bw7bwi2laloytu.gz" "DetectNet-COCO-Dog.tar.gz" 
+download_archive "https://nvidia.box.com/shared/static/fq0m0en5mmssiizhs9nxw3xtwgnoltf2.gz" "DetectNet-COCO-Chair.tar.gz" 
+download_archive "https://nvidia.box.com/shared/static/8bhm91o9yldpf97dcz5d0welgmjy7ucw.gz" "DetectNet-COCO-Bottle.tar.gz" 
+download_archive "https://nvidia.box.com/shared/static/xi71hlsht5b0y66loeg73rxfa73q561s.gz" "DetectNet-COCO-Airplane.tar.gz" 
