@@ -59,7 +59,6 @@ detectNet* detectNet::Create( const char* prototxt, const char* model, float mea
 						float threshold, const char* input_blob, const char* coverage_blob, const char* bbox_blob, 
 						uint32_t maxBatchSize, precisionType precision, deviceType device, bool allowGPUFallback )
 {
-	printf("???????????????????????????????????????????????????\n");
 	detectNet* net = new detectNet();
 	
 	if( !net )
@@ -118,7 +117,6 @@ detectNet* detectNet::Create( const char* prototxt, const char* model, const cha
 						uint32_t maxBatchSize, precisionType precision, deviceType device, bool allowGPUFallback )
 {
 
-	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 	detectNet* net = new detectNet();
 	
 	if( !net )
@@ -300,7 +298,6 @@ bool detectNet::loadClassDesc( const char* filename )
 detectNet* detectNet::Create( NetworkType networkType, float threshold, uint32_t maxBatchSize, 
 						precisionType precision, deviceType device, bool allowGPUFallback )
 {
-	printf("sdfsdfsfds\n");
 	if( networkType == PEDNET_MULTI )
 		return Create("third_party/jetson-inference/data/multiped-500/deploy.prototxt", 
 		"third_party/jetson-inference/data/multiped-500/snapshot_iter_178000.caffemodel", 117.0f, 
@@ -357,7 +354,6 @@ detectNet::NetworkType detectNet::NetworkTypeFromStr( const char* modelName )
 
 detectNet* detectNet::Create( int argc, char** argv )
 {
-	printf("NOTNONOONONONOON\n");
 	commandLine cmdLine(argc, argv);
 
 	const char* modelName = cmdLine.GetString("model");
