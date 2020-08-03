@@ -137,7 +137,7 @@ add_subdirectory(trt-console)
 add_subdirectory(docs)
 add_subdirectory(utils)
 
-target_link_libraries(jetson-inference jetson-utils nvinfer nvcaffe_parser)
+target_link_libraries(jetson-inference jetson-utils nvinfer nvcaffe_parser nvinfer_plugin)
 
 if(CUDA_VERSION_MAJOR GREATER 9)
 	target_link_libraries(jetson-inference nvonnxparser opencv_core opencv_calib3d)
